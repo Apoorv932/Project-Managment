@@ -50,7 +50,8 @@ class FinanceApiIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Freelance"))
                 .andExpect(jsonPath("$.type").value("INCOME"))
-                .andExpect(jsonPath("$.isCustom").value(true));
+                .andExpect(jsonPath("$.isCustom").value(true))
+                .andExpect(jsonPath("$.custom").value(true));
 
         MvcResult incomeResult = mockMvc.perform(post("/api/transactions")
                         .session(session)
@@ -120,6 +121,7 @@ class FinanceApiIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.goalName").value("Emergency Fund"))
                 .andExpect(jsonPath("$.currentProgress").value(58500.00))
+                .andExpect(jsonPath("$.progressPercentage").value(1170.0))
                 .andExpect(jsonPath("$.remainingAmount").value(0));
 
         mockMvc.perform(get("/api/reports/monthly/2024/1").session(session))
@@ -255,6 +257,7 @@ class FinanceApiIntegrationTest {
                                 """))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.remainingAmount").value(10000.00))
+                .andExpect(jsonPath("$.progressPercentage").value(0.0))
                 .andReturn();
 
         long goalId = readId(goalResult);
