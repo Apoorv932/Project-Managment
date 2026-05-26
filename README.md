@@ -49,3 +49,14 @@ On this machine, IntelliJ's bundled Maven can be used with the project-local Mav
 ```powershell
 & 'C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2023.3.3\plugins\maven\lib\maven3\bin\mvn.cmd' -s maven-settings.xml test
 ```
+
+## Render Deployment With Docker
+
+Create a Render Web Service with:
+
+```text
+Runtime: Docker
+Dockerfile Path: ./Dockerfile
+```
+
+Render does not need a separate build command or start command when using this Dockerfile.
