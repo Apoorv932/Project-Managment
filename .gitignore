@@ -1,0 +1,13 @@
+target/
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+
+*.log
+*.tmp
+
+src/main/resources/application-local.properties
