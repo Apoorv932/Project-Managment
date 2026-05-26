@@ -16,6 +16,7 @@ import com.personalfinance.entity.CategoryType;
 import com.personalfinance.entity.TransactionEntity;
 import com.personalfinance.entity.UserEntity;
 import com.personalfinance.exception.BadRequestException;
+import com.personalfinance.exception.ForbiddenException;
 import com.personalfinance.exception.NotFoundException;
 import com.personalfinance.repository.TransactionRepository;
 
@@ -49,6 +50,7 @@ public class TransactionService {
 
     @Transactional(readOnly = true)
     public TransactionsResponse getTransactions(LocalDate startDate, LocalDate endDate, Long categoryId,
+                                                String categoryName,
                                                 CategoryType type, UserEntity user) {
         if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             throw new BadRequestException("Start date cannot be after end date");
@@ -57,6 +59,8 @@ public class TransactionService {
         CategoryEntity category = null;
         if (categoryId != null) {
             category = categoryService.findAccessibleCategoryById(categoryId, user);
+        } else if (categoryName != null && !categoryName.isBlank()) {
+            category = categoryService.findAccessibleCategoryByName(categoryName, user);
         }
 
         List<TransactionResponse> transactions = transactionRepository
@@ -70,8 +74,7 @@ public class TransactionService {
 
     @Transactional
     public TransactionResponse updateTransaction(Long id, TransactionUpdateRequest request, UserEntity user) {
-        TransactionEntity transaction = transactionRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new NotFoundException("Transaction not found"));
+        TransactionEntity transaction = findTransactionForUser(id, user);
 
         CategoryEntity category = null;
         if (request.category() != null && !request.category().isBlank()) {
@@ -84,10 +87,18 @@ public class TransactionService {
 
     @Transactional
     public MessageResponse deleteTransaction(Long id, UserEntity user) {
-        TransactionEntity transaction = transactionRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new NotFoundException("Transaction not found"));
+        TransactionEntity transaction = findTransactionForUser(id, user);
 
         transactionRepository.delete(transaction);
         return new MessageResponse("Transaction deleted successfully");
+    }
+
+    private TransactionEntity findTransactionForUser(Long id, UserEntity user) {
+        TransactionEntity transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Transaction not found"));
+        if (!transaction.getUser().getId().equals(user.getId())) {
+            throw new ForbiddenException("Access denied");
+        }
+        return transaction;
     }
 }

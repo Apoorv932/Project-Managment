@@ -17,6 +17,7 @@ import com.personalfinance.entity.CategoryType;
 import com.personalfinance.entity.SavingsGoalEntity;
 import com.personalfinance.entity.UserEntity;
 import com.personalfinance.exception.BadRequestException;
+import com.personalfinance.exception.ForbiddenException;
 import com.personalfinance.exception.NotFoundException;
 import com.personalfinance.repository.SavingsGoalRepository;
 import com.personalfinance.repository.TransactionRepository;
@@ -80,8 +81,12 @@ public class SavingsGoalService {
     }
 
     private SavingsGoalEntity findGoal(Long id, UserEntity user) {
-        return savingsGoalRepository.findByIdAndUser(id, user)
+        SavingsGoalEntity goal = savingsGoalRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Goal not found"));
+        if (!goal.getUser().getId().equals(user.getId())) {
+            throw new ForbiddenException("Access denied");
+        }
+        return goal;
     }
 
     private GoalResponse toResponse(SavingsGoalEntity goal) {

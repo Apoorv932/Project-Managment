@@ -18,7 +18,7 @@ Spring Boot REST API for the Personal Finance Manager assignment.
 1. Project foundation, configuration, and package structure - complete
 2. Domain entities, repositories, DTOs, and services - complete
 3. Controllers, session authentication, validation, and exception handling - complete
-4. Assignment test-script alignment and final polish
+4. Tests, assignment-script compatibility, and final polish - complete
 
 ## Local Run
 
@@ -42,4 +42,10 @@ GET /api/health
 
 ```bash
 mvn test
+```
+
+On this machine, IntelliJ's bundled Maven can be used with the project-local Maven settings:
+
+```powershell
+& 'C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2023.3.3\plugins\maven\lib\maven3\bin\mvn.cmd' -s maven-settings.xml test
 ```
