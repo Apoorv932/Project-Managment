@@ -9,4 +9,9 @@ public record CategoryResponse(String name, CategoryType type, @JsonProperty("is
     public static CategoryResponse from(CategoryEntity category) {
         return new CategoryResponse(category.getName(), category.getType(), category.isCustom());
     }
+
+    @JsonProperty("custom")
+    public boolean custom() {
+        return isCustom;
+    }
 }

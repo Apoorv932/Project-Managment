@@ -12,12 +12,12 @@ public record GoalResponse(
         LocalDate targetDate,
         LocalDate startDate,
         BigDecimal currentProgress,
-        BigDecimal progressPercentage,
+        Double progressPercentage,
         BigDecimal remainingAmount
 ) {
 
     public static GoalResponse from(SavingsGoalEntity goal, BigDecimal currentProgress,
-                                    BigDecimal progressPercentage, BigDecimal remainingAmount) {
+                                    Double progressPercentage, BigDecimal remainingAmount) {
         return new GoalResponse(
                 goal.getId(),
                 goal.getGoalName(),

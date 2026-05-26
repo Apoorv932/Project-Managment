@@ -96,9 +96,11 @@ public class SavingsGoalService {
                 goal.getUser(), CategoryType.EXPENSE, goal.getStartDate());
         BigDecimal currentProgress = income.subtract(expenses);
         BigDecimal remainingAmount = goal.getTargetAmount().subtract(currentProgress).max(BigDecimal.ZERO);
-        BigDecimal progressPercentage = currentProgress
+        Double progressPercentage = currentProgress
                 .multiply(BigDecimal.valueOf(100))
-                .divide(goal.getTargetAmount(), 2, RoundingMode.HALF_UP);
+                .divide(goal.getTargetAmount(), 2, RoundingMode.HALF_UP)
+                .stripTrailingZeros()
+                .doubleValue();
 
         return GoalResponse.from(goal, currentProgress, progressPercentage, remainingAmount);
     }
