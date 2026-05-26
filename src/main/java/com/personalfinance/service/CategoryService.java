@@ -51,8 +51,10 @@ public class CategoryService {
 
     @Transactional
     public MessageResponse deleteCustomCategory(String name, UserEntity user) {
-        CategoryEntity category = categoryRepository.findByNameAndUserAndDeletedFalse(name, user)
-                .orElseThrow(() -> new NotFoundException("Category not found"));
+        String normalizedName = normalizeName(name);
+        CategoryEntity category = categoryRepository.findByNameAndUserAndDeletedFalse(normalizedName, user)
+                .orElseGet(() -> categoryRepository.findByNameAndCustomFalseAndDeletedFalse(normalizedName)
+                        .orElseThrow(() -> new NotFoundException("Category not found")));
 
         if (!category.isCustom()) {
             throw new ForbiddenException("Default categories cannot be deleted");

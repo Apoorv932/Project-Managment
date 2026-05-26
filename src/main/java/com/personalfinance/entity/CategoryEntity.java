@@ -84,7 +84,4 @@ public class CategoryEntity {
         return user;
     }
 
-    public void markDeleted() {
-        this.deleted = true;
-    }
 }

@@ -17,7 +17,7 @@ Spring Boot REST API for the Personal Finance Manager assignment.
 
 1. Project foundation, configuration, and package structure - complete
 2. Domain entities, repositories, DTOs, and services - complete
-3. Validation, exception handling, security hardening, and test coverage
+3. Controllers, session authentication, validation, and exception handling - complete
 4. Assignment test-script alignment and final polish
 
 ## Local Run

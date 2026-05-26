@@ -9,7 +9,7 @@ import com.personalfinance.dto.RegisterRequest;
 import com.personalfinance.dto.RegisterResponse;
 import com.personalfinance.entity.UserEntity;
 import com.personalfinance.exception.ConflictException;
-import com.personalfinance.exception.NotFoundException;
+import com.personalfinance.exception.UnauthorizedException;
 import com.personalfinance.repository.UserRepository;
 
 @Service
@@ -44,10 +44,10 @@ public class AuthService {
     public UserEntity authenticate(LoginRequest request) {
         String username = request.username().trim().toLowerCase();
         UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new NotFoundException("Invalid username or password"));
+                .orElseThrow(() -> new UnauthorizedException("Invalid username or password"));
 
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
-            throw new NotFoundException("Invalid username or password");
+            throw new UnauthorizedException("Invalid username or password");
         }
 
         return user;
