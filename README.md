@@ -15,8 +15,8 @@ Spring Boot REST API for the Personal Finance Manager assignment.
 
 ## Current Build Phases
 
-1. Project foundation, configuration, and package structure
-2. Domain entities, repositories, services, and API endpoints
+1. Project foundation, configuration, and package structure - complete
+2. Domain entities, repositories, DTOs, and services - complete
 3. Validation, exception handling, security hardening, and test coverage
 4. Assignment test-script alignment and final polish
 
